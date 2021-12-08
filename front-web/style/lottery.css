@@ -1,0 +1,151 @@
+.lottery-container {
+  padding: 40px 0;
+}
+
+.lottery-title {
+  margin-top: 25px;
+  font-size: 24px;
+  color: #707070;
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.lottery-title-chooice {
+  font-weight: 300;
+}
+
+.lottery-subtitle {
+  margin-top: 30px;
+  font-size: 16px;
+  color: #868686;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.5em;
+}
+
+.lottery-subtitle-paragraph {
+  font-weight: 300;
+}
+
+.btn-chooice {
+  border: 3px solid #01ac66;
+  background-color: #fff;
+  color: #01ac66;
+  border-radius: 80px;
+  padding: 5px 20px;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.btn-chooice:hover {
+  border: 3px solid #01ac66;
+  background-color: #01ac66;
+  color: #fff;
+}
+
+.btn-action {
+  padding: 7px 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 3px solid #27c383;
+  color: #27c383;
+}
+
+.btn-action:hover,
+.btn-add-cart,
+.btn-add-cart:hover {
+  padding: 7px 20px;
+  border-radius: 10px;
+  background-color: #27c383;
+  color: #fff;
+}
+
+.lottery-chooice-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 25px 0 30px 0;
+}
+
+.chooice-number {
+  background-color: #adc0c4;
+  padding: 20px;
+  border-radius: 100%;
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+  margin: 0 12px 20px 0;
+}
+
+.card-lottery-cart {
+  background-color: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px 10px 0 0;
+  padding: 30px 20px 45px 20px;
+  margin-top: 40px;
+}
+
+.lottery-title-cart {
+  font-size: 24px;
+  font-style: italic;
+  font-weight: bold;
+  color: #707070;
+  text-transform: uppercase;
+}
+
+.lottery-ticket {
+  padding: 40px 0;
+}
+
+.lottery-bin-icon {
+  height: 25px;
+  margin-right: 10px;
+}
+
+.lottery-register-info {
+  padding: 7px 0 7px 10px;
+  border-left: 5px solid #01ac66;
+}
+
+.lottery-register {
+  font-size: 16px;
+  color: #868686;
+  font-weight: bold;
+  font-style: italic;
+  line-height: 1.5em;
+}
+
+.lottery-game-registered {
+  color: #01ac66;
+}
+
+.lottery-game-price {
+  color: #868686;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.lottery-total-cart {
+  font-style: normal;
+  font-weight: 300;
+}
+
+.card-lottery-save {
+  text-align: center;
+  background-color: #f4f4f4;
+  border: 1px solid #e2e2e2;
+  border-radius: 0 0 10px 10px;
+  padding: 25px 0;
+}
+
+.lottery-title-save {
+  color: #27c383;
+  font-size: 35px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.fa-arrow-right {
+  font-size: 25px;
+}

@@ -13,38 +13,15 @@ hr {
   margin: 0;
 }
 
-.navbar-content {
-  display: flex;
-  justify-content: space-around;
+.mr-ml-20 {
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
-.navbar-logo {
-  font-size: 44px;
-  margin-right: 50px;
-  border-bottom: 6px solid #b5c401;
-  padding: 10px;
-  z-index: 1;
-}
-
-.navbar-item {
-  font-size: 20px;
-}
-
-.navbar-menu {
-  color: #707070;
-  font-style: italic;
-  font-weight: 600;
-}
-
-.navbar-arrow-right-icon {
-  height: 20px;
+.mr-15 {
+  margin-right: 15px;
 }
 
 .mr-35 {
   margin-right: 35px;
-}
-
-.navbar-line {
-  margin-top: -3px;
-  z-index: 0;
 }

@@ -1,0 +1,31 @@
+.navbar-content {
+  display: flex;
+  justify-content: space-around;
+}
+
+.navbar-logo {
+  font-size: 44px;
+  margin-right: 50px;
+  border-bottom: 6px solid #b5c401;
+  padding: 10px;
+  z-index: 1;
+}
+
+.navbar-item {
+  font-size: 20px;
+}
+
+.navbar-menu {
+  color: #707070;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.navbar-arrow-right-icon {
+  height: 20px;
+}
+
+.navbar-line {
+  margin-top: -3px;
+  z-index: 0;
+}
