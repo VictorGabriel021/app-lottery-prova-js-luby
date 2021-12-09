@@ -31,18 +31,11 @@
 .btn-chooice {
   border: 3px solid #01ac66;
   background-color: #fff;
-  color: #01ac66;
   border-radius: 80px;
-  padding: 5px 20px;
   font-size: 14px;
   font-style: italic;
   font-weight: 700;
-}
-
-.btn-chooice:hover {
-  border: 3px solid #01ac66;
-  background-color: #01ac66;
-  color: #fff;
+  width: 130px;
 }
 
 .btn-action {
