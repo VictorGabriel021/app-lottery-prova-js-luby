@@ -126,6 +126,7 @@
         var $btnAddToCart = new DOM('[data-js="add-to-cart"]');
         win.total = 0;
         win.item = 0;
+        win.id = 0;
         $btnAddToCart.on('click', app().createItemCart);
       },
 
@@ -136,10 +137,7 @@
             app().addItemStylesCss();
 
             win.total += win.game.price;
-            var $totalCart = new DOM('[data-js="total-cart"]');
-            $totalCart.get().textContent = `TOTAL: ${win.total.toLocaleString(
-              'pt-BR', { style: 'currency', currency: 'BRL' }
-            )}`;
+            app().getTotalCart();
           }
           else
             win.alert('O máximo de jogos por pessoa é 30');
@@ -151,11 +149,11 @@
         var $itensCart = new DOM('[data-js="itens-cart"]');
         $itensCart.get().insertAdjacentHTML('beforeend',
           `
-            <div class="d-flex align-items-center mb-4">
-              <img src="images/bin.png" alt="bin" class="lottery-bin-icon" />
-              <div class="lottery-register-info${++win.item}">
+            <div class="d-flex align-items-center mb-4" data-js="item-container${++win.id}">
+              <img src="images/bin.png" alt="bin" class="lottery-bin-icon" data-js="bin-image${win.id}" />
+              <div class="lottery-register-info${win.id}">
                 <p class="lottery-register">${listNumbers.join()}</p>
-                <p class="lottery-register lottery-game-registered${win.item}">
+                <p class="lottery-register lottery-game-registered${win.id}">
                   ${win.game.type}
                   <span class="lottery-game-price">
                     ${Number(win.game.price).toLocaleString(
@@ -167,6 +165,27 @@
             </div >
           `
         );
+        ++win.item;
+        app().removeItemCart($itensCart, win.id, win.game.price);
+      },
+
+      removeItemCart: function removeItemCart($itensCart, index, price) {
+        var $binImg = new DOM(`[data-js="bin-image${index}"]`);
+        $binImg.on('click', function (e) {
+          if (win.confirm('Deseja realmente excluir este item do carrinho ?')) {
+            $itensCart.get().removeChild(doc.querySelector(`[data-js="item-container${index}"]`));
+            win.total -= price;
+            win.item -= 1;
+            app().getTotalCart();
+          }
+        });
+      },
+
+      getTotalCart: function getTotalCart() {
+        var $totalCart = new DOM('[data-js="total-cart"]');
+        $totalCart.get().textContent = `TOTAL: ${win.total.toLocaleString(
+          'pt-BR', { style: 'currency', currency: 'BRL' }
+        )}`;
       },
 
       addNumberZero: function addNumberZero() {
@@ -179,8 +198,8 @@
       },
 
       addItemStylesCss: function addItemStylesCss() {
-        var $lotteryGameRegisteredCss = doc.getElementsByClassName(`lottery-game-registered${win.item}`);
-        var $lotteryRegisterInfoCss = doc.getElementsByClassName(`lottery-register-info${win.item}`);
+        var $lotteryGameRegisteredCss = doc.getElementsByClassName(`lottery-game-registered${win.id}`);
+        var $lotteryRegisterInfoCss = doc.getElementsByClassName(`lottery-register-info${win.id}`);
         $lotteryGameRegisteredCss[0].style.color = `${win.game.color} `;
         $lotteryRegisterInfoCss[0].style.borderLeft = `5px solid ${win.game.color} `;
         $lotteryRegisterInfoCss[0].style.padding = '7px 0 7px 10px';

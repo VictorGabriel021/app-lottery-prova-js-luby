@@ -94,6 +94,7 @@
 .lottery-bin-icon {
   height: 25px;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .lottery-register {
