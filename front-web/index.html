@@ -50,7 +50,7 @@
             <button class="btn btn-action mr-15" data-js="complete-game">Complete game</button>
             <button class="btn btn-action" data-js="clear-game">Clear game</button>
           </div>
-          <button class="btn btn-add-cart">
+          <button class="btn btn-add-cart" data-js="add-to-cart">
             <img src="images/cart.png" alt="shopping-cart" class="mr-15" />
             Add to cart
           </button>
@@ -59,38 +59,9 @@
       <div class="col-12 col-md-4">
         <div class="card-lottery-cart">
           <h3 class="lottery-title-cart">Cart</h3>
-          <div class="lottery-ticket">
-            <div class="d-flex align-items-center mb-4">
-              <img src="images/bin.png" alt="bin" class="lottery-bin-icon" />
-              <div class="lottery-register-info">
-                <p class="lottery-register">data 31/12/2031</p>
-                <p class="lottery-register lottery-game-registered">
-                  Lotofácil <span class="lottery-game-price">R$ 2,00</span>
-                </p>
-              </div>
-            </div>
-            <div class="d-flex align-items-center mb-4">
-              <img src="images/bin.png" alt="bin" class="lottery-bin-icon" />
-              <div class="lottery-register-info">
-                <p class="lottery-register">data 31/12/2031data 31/12/2031data 31/12/2031data 31/12/2031data 31/12/2031
-                </p>
-                <p class="lottery-register lottery-game-registered">
-                  Lotofácil <span class="lottery-game-price">R$ 2,00</span>
-                </p>
-              </div>
-            </div>
-            <div class="d-flex align-items-center mb-4">
-              <img src="images/bin.png" alt="bin" class="lottery-bin-icon" />
-              <div class="lottery-register-info">
-                <p class="lottery-register">data 31/12/2031</p>
-                <p class="lottery-register lottery-game-registered">
-                  Lotofácil <span class="lottery-game-price">R$ 2,00</span>
-                </p>
-              </div>
-            </div>
-          </div>
+          <div class="lottery-ticket" data-js="itens-cart"></div>
           <h3 class="lottery-title-cart">
-            Cart <span class="lottery-total-cart">TOTAL: R$ 7,00</span>
+            Cart <span class="lottery-total-cart" data-js="total-cart">TOTAL: </span>
           </h3>
         </div>
         <div class="card-lottery-save">

@@ -96,21 +96,12 @@
   margin-right: 10px;
 }
 
-.lottery-register-info {
-  padding: 7px 0 7px 10px;
-  border-left: 5px solid #01ac66;
-}
-
 .lottery-register {
   font-size: 16px;
   color: #868686;
   font-weight: bold;
   font-style: italic;
   line-height: 1.5em;
-}
-
-.lottery-game-registered {
-  color: #01ac66;
 }
 
 .lottery-game-price {
