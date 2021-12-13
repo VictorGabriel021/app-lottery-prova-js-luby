@@ -40,12 +40,12 @@
             `<button class="btn btn-chooice btn-chooice-color${index} mr-20 mb-3">${game.type}</button>`
           );
 
-          var $btnChooiceColor = doc.getElementsByClassName(`btn-chooice-color${index}`);
+          var $btnChooiceColor = new DOM(`.btn-chooice-color${index}`);
           app().addCssInButtonGame(index, game.color);
-          $btnChooiceColor[0].game = games.types[index];
-          $btnChooiceColor[0].color = game.color;
-          $btnChooiceColor[0].addClassCss = index;
-          $btnChooiceColor[0].addEventListener('click', app().loadLotteryInfo, false);
+          $btnChooiceColor.get().game = games.types[index];
+          $btnChooiceColor.get().color = game.color;
+          $btnChooiceColor.get().addClassCss = index;
+          $btnChooiceColor.get().addEventListener('click', app().loadLotteryInfo, false);
         });
       },
 
@@ -61,12 +61,12 @@
           color: #FFF;
         }`;
 
-        var style = document.createElement('style');
+        var style = doc.createElement('style');
         if (style.styleSheet)
           style.styleSheet.cssText = css;
         else
-          style.appendChild(document.createTextNode(css));
-        document.getElementsByTagName('head')[0].appendChild(style);
+          style.appendChild(doc.createTextNode(css));
+        doc.getElementsByTagName('head')[0].appendChild(style);
       },
 
       loadLotteryInfo: function loadLotteryInfo() {
@@ -109,8 +109,8 @@
               selectedNumbers.add(Math.ceil(Math.random() * selectedGame.range));
             }
             selectedNumbers.forEach(function (item) {
-              var $numbers = doc.getElementsByClassName(`chooice-number${item}`)
-              $numbers[0].style.backgroundColor = '#27c383';
+              var $numbers = new DOM(`.chooice-number${item}`)
+              $numbers.get().style.backgroundColor = '#27c383';
             });
           }
         });
@@ -133,8 +133,8 @@
 
       clearSelectedNumbers: function clearSelectedNumbers() {
         selectedNumbers.forEach(function (item) {
-          var $numbers = doc.getElementsByClassName(`chooice-number${item}`)
-          $numbers[0].style.backgroundColor = `#adc0c4`;
+          var $numbers = new DOM(`.chooice-number${item}`)
+          $numbers.get().style.backgroundColor = `#adc0c4`;
         });
       },
 
@@ -206,11 +206,11 @@
       },
 
       addItemStylesCss: function addItemStylesCss() {
-        var $lotteryGameRegisteredCss = doc.getElementsByClassName(`lottery-game-registered${itemId}`);
-        var $lotteryRegisterInfoCss = doc.getElementsByClassName(`lottery-register-info${itemId}`);
-        $lotteryGameRegisteredCss[0].style.color = `${selectedGame.color} `;
-        $lotteryRegisterInfoCss[0].style.borderLeft = `5px solid ${selectedGame.color} `;
-        $lotteryRegisterInfoCss[0].style.padding = '7px 0 7px 10px';
+        var $lotteryGameRegisteredCss = new DOM(`.lottery-game-registered${itemId}`);
+        var $lotteryRegisterInfoCss = new DOM(`.lottery-register-info${itemId}`);
+        $lotteryGameRegisteredCss.get().style.color = `${selectedGame.color} `;
+        $lotteryRegisterInfoCss.get().style.borderLeft = `5px solid ${selectedGame.color} `;
+        $lotteryRegisterInfoCss.get().style.padding = '7px 0 7px 10px';
       },
 
       saveItens: function saveItens() {
