@@ -4,9 +4,9 @@
     {
       "type": "Lotofácil",
       "description": "Escolha 15 números para apostar na lotofácil. Você ganha acertando 11, 12, 13, 14 ou 15 números. São muitas chances de ganhar, e agora você joga de onde estiver!",
-      "range": 25,
+      "range": 6,
       "price": 2.5,
-      "max-number": 15,
+      "max-number": 5,
       "color": "#7F3992"
     },
     {

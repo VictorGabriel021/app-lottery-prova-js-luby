@@ -3,6 +3,7 @@
 
   var minCartValue;
   var selectedNumbers;
+  var selectedNumbersList = [];
   var selectedGame;
   var totalCart = 0;
   var totalItensCart = 0;
@@ -62,10 +63,7 @@
         }`;
 
         var style = doc.createElement('style');
-        if (style.styleSheet)
-          style.styleSheet.cssText = css;
-        else
-          style.appendChild(doc.createTextNode(css));
+        style.appendChild(doc.createTextNode(css));
         doc.getElementsByTagName('head')[0].appendChild(style);
       },
 
@@ -145,28 +143,57 @@
 
       createItemCart: function createItemCart() {
         if (selectedNumbers && selectedNumbers?.size > 0) {
-          app().createItem();
-          app().addItemStylesCss();
-          totalCart += selectedGame.price;
-          app().getTotalCart();
+          var selectedNumberGame = [...selectedNumbers].sort((x, y) => x - y);
+
+          if (!app().hasOtherGameRegistered(selectedNumberGame)) {
+            selectedNumbersList.push(selectedNumberGame);
+            app().createItem();
+            app().addItemStylesCss();
+            totalCart += selectedGame.price;
+            app().getTotalCart();
+            selectedNumbers = app().clearListNumbers(selectedNumbers);
+          }
         }
+        else {
+          win.alert(`Por favor selecione ${selectedGame['max-number']} números para continuar!`);
+        }
+      },
+
+      hasOhterGameResgitered: function hasOhterGameResgitered(selectedNumberGame) {
+        var isGameEqual = false;
+
+        for (let itemArray in selectedNumbersList) {
+          var isEqual = selectedNumbersList[itemArray].every(function (item, index) {
+            return item === selectedNumberGame[index];
+          });
+          if (isEqual) {
+            win.alert('Não é possível adicionar o mesmo jogo de loteria');
+            isGameEqual = true;
+            break;
+          }
+        }
+        return isGameEqual;
       },
 
       createItem: function createItem() {
         var listNumbers = app().addNumberZero();
         var $itensCart = new DOM('[data-js="itens-cart"]');
+
+        if ($itensCart.get().children[0].className === 'alert alert-danger')
+          $itensCart.get().removeChild($itensCart.get().children[0]);
+
         $itensCart.get().insertAdjacentHTML('beforeend',
           `
             <div class="d-flex align-items-center mb-4" data-js="item-container${++itemId}">
               <img src="images/bin.png" alt="bin" class="lottery-bin-icon" data-js="bin-image${itemId}" />
-              <div class="lottery-register-info${itemId}">
+              <div class="lottery-register-info${itemId} lottery-cart-content">
                 <p class="lottery-register">${listNumbers.join()}</p>
                 <p class="lottery-register lottery-game-registered${itemId}">
                   ${selectedGame.type}
                   <span class="lottery-game-price">
                     ${Number(selectedGame.price).toLocaleString(
-                      'pt-BR', { style: 'currency', currency: 'BRL' }
-                    )}
+            'pt-BR', { style: 'currency', currency: 'BRL' }
+          )}
                   </span >
                 </p >
               </div >
