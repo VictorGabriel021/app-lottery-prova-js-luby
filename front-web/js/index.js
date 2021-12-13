@@ -1,15 +1,21 @@
 (function (win, DOM, doc) {
   'use strict';
 
-  function app() {
-    var selectedNumbers = new Set();
+  var minCartValue;
+  var selectedNumbers;
+  var selectedGame;
+  var totalCart = 0;
+  var totalItensCart = 0;
+  var itemId = 0;
 
+  function app() {
     return {
       init: function init() {
         this.getLotteryGames();
         this.completeGame();
         this.clearGame();
         this.addToCart();
+        this.saveItens();
       },
 
       getLotteryGames: function getLotteryGames() {
@@ -27,46 +33,58 @@
       },
 
       createButtonLotteryGame: function createButtonLotteryGame(games) {
+        minCartValue = games['min-cart-value'];
         var $lotteryGames = new DOM('[data-js="lottery-games"]');
-        win.minCartValue = games['min-cart-value'];
         games.types.forEach((game, index) => {
           $lotteryGames.get().insertAdjacentHTML('beforeend',
-            `<button class="btn btn-chooice btn-chooice-color${index} mr-20">${game.type}</button>`
+            `<button class="btn btn-chooice btn-chooice-color${index} mr-20 mb-3">${game.type}</button>`
           );
 
           var $btnChooiceColor = doc.getElementsByClassName(`btn-chooice-color${index}`);
-          $btnChooiceColor[0].style.color = `${game.color}`;
-          $btnChooiceColor[0].style.borderColor = `${game.color}`;
-          app().addEvents($btnChooiceColor[0], game.color, games.types[index]);
+          app().addCssInButtonGame(index, game.color);
+          $btnChooiceColor[0].game = games.types[index];
+          $btnChooiceColor[0].color = game.color;
+          $btnChooiceColor[0].addClassCss = index;
+          $btnChooiceColor[0].addEventListener('click', app().loadLotteryInfo, false);
         });
       },
 
-      addEvents: function addEvents(element, color, game) {
-        element.color = color;
-        element.game = game;
-        element.addEventListener('mouseover', app().getStyleMouseOver, false);
-        element.addEventListener('mouseout', app().getStyleMouseout, false);
-        element.addEventListener('click', app().loadLotteryInfo, false);
-      },
+      addCssInButtonGame: function addCssInButtonGame(index, color) {
+        var css = `
+        .btn-chooice-color${index} {
+          background-color: #FFF;
+          color: ${color};
+          border-color: ${color};
+        }
+        .btn-chooice-color${index}:hover, .selected${index} {
+          background-color: ${color};
+          color: #FFF;
+        }`;
 
-      getStyleMouseOver: function getStyleMouseOver() {
-        this.style.color = '#FFF';
-        this.style.backgroundColor = `${this.color}`;
-      },
-
-      getStyleMouseout: function getStyleMouseout() {
-        this.style.color = `${this.color}`;
-        this.style.backgroundColor = '#FFF';
+        var style = document.createElement('style');
+        if (style.styleSheet)
+          style.styleSheet.cssText = css;
+        else
+          style.appendChild(document.createTextNode(css));
+        document.getElementsByTagName('head')[0].appendChild(style);
       },
 
       loadLotteryInfo: function loadLotteryInfo() {
+        app().addCssButtonSelected.call(this);
         var $lotteryTitle = new DOM('[data-js="lottery-title"]');
         var $lotteryDescription = new DOM('[data-js="lottery-description"]');
         $lotteryTitle.get().textContent = `for ${this.game.type}`;
         $lotteryDescription.get().textContent = this.game.description;
         app().createNumbersLottery(this.game.range);
-        win.game = this.game;
-        win.selectedNumbers = new Set();
+        selectedGame = this.game;
+        selectedNumbers = new Set();
+      },
+
+      addCssButtonSelected: function addCssButtonSelected() {
+        Array.prototype.forEach.call(this.parentNode.children, function (item, index) {
+          item.classList.remove(`selected${index}`);
+        });
+        this.classList.add(`selected${this.addClassCss}`);
       },
 
       createNumbersLottery: function createNumbersLottery(numbers) {
@@ -85,37 +103,35 @@
       completeGame: function completeGame() {
         var $btnCompleteGame = new DOM('[data-js="complete-game"]');
         $btnCompleteGame.on('click', function () {
-          if (win.game) {
-            selectedNumbers = app().clearListNumbers(selectedNumbers);
-            while (selectedNumbers.size < win.game['max-number']) {
-              selectedNumbers.add(Math.ceil(Math.random() * win.game.range));
+          if (selectedGame) {
+            selectedNumbers = app().clearListNumbers();
+            while (selectedNumbers.size < selectedGame['max-number']) {
+              selectedNumbers.add(Math.ceil(Math.random() * selectedGame.range));
             }
             selectedNumbers.forEach(function (item) {
               var $numbers = doc.getElementsByClassName(`chooice-number${item}`)
               $numbers[0].style.backgroundColor = '#27c383';
             });
-            win.selectedNumbers = selectedNumbers;
           }
         });
       },
 
-      clearListNumbers: function clearListNumbers(selectedNumbers) {
+      clearListNumbers: function clearListNumbers() {
         var maxSelectedNumber = Math.max.apply(Math, [...selectedNumbers]);
-        if (win.game.range >= maxSelectedNumber)
-          app().clearSelectedNumbers(selectedNumbers);
+        if (selectedGame.range >= maxSelectedNumber)
+          app().clearSelectedNumbers();
         return selectedNumbers = new Set();
       },
 
       clearGame: function clearGame() {
         var $btnClearGame = new DOM('[data-js="clear-game"]');
         $btnClearGame.on('click', function () {
-          if (win.game)
+          if (selectedGame)
             selectedNumbers = app().clearListNumbers(selectedNumbers);
-          win.selectedNumbers = selectedNumbers;
         });
       },
 
-      clearSelectedNumbers: function clearSelectedNumbers(selectedNumbers) {
+      clearSelectedNumbers: function clearSelectedNumbers() {
         selectedNumbers.forEach(function (item) {
           var $numbers = doc.getElementsByClassName(`chooice-number${item}`)
           $numbers[0].style.backgroundColor = `#adc0c4`;
@@ -124,23 +140,15 @@
 
       addToCart: function addToCart() {
         var $btnAddToCart = new DOM('[data-js="add-to-cart"]');
-        win.total = 0;
-        win.item = 0;
-        win.id = 0;
         $btnAddToCart.on('click', app().createItemCart);
       },
 
       createItemCart: function createItemCart() {
-        if (win.selectedNumbers && win.selectedNumbers?.size > 0) {
-          if (win.minCartValue > win.item) {
-            app().createItem();
-            app().addItemStylesCss();
-
-            win.total += win.game.price;
-            app().getTotalCart();
-          }
-          else
-            win.alert('O máximo de jogos por pessoa é 30');
+        if (selectedNumbers && selectedNumbers?.size > 0) {
+          app().createItem();
+          app().addItemStylesCss();
+          totalCart += selectedGame.price;
+          app().getTotalCart();
         }
       },
 
@@ -149,14 +157,14 @@
         var $itensCart = new DOM('[data-js="itens-cart"]');
         $itensCart.get().insertAdjacentHTML('beforeend',
           `
-            <div class="d-flex align-items-center mb-4" data-js="item-container${++win.id}">
-              <img src="images/bin.png" alt="bin" class="lottery-bin-icon" data-js="bin-image${win.id}" />
-              <div class="lottery-register-info${win.id}">
+            <div class="d-flex align-items-center mb-4" data-js="item-container${++itemId}">
+              <img src="images/bin.png" alt="bin" class="lottery-bin-icon" data-js="bin-image${itemId}" />
+              <div class="lottery-register-info${itemId}">
                 <p class="lottery-register">${listNumbers.join()}</p>
-                <p class="lottery-register lottery-game-registered${win.id}">
-                  ${win.game.type}
+                <p class="lottery-register lottery-game-registered${itemId}">
+                  ${selectedGame.type}
                   <span class="lottery-game-price">
-                    ${Number(win.game.price).toLocaleString(
+                    ${Number(selectedGame.price).toLocaleString(
                       'pt-BR', { style: 'currency', currency: 'BRL' }
                     )}
                   </span >
@@ -165,31 +173,12 @@
             </div >
           `
         );
-        ++win.item;
-        app().removeItemCart($itensCart, win.id, win.game.price);
-      },
-
-      removeItemCart: function removeItemCart($itensCart, index, price) {
-        var $binImg = new DOM(`[data-js="bin-image${index}"]`);
-        $binImg.on('click', function (e) {
-          if (win.confirm('Deseja realmente excluir este item do carrinho ?')) {
-            $itensCart.get().removeChild(doc.querySelector(`[data-js="item-container${index}"]`));
-            win.total -= price;
-            win.item -= 1;
-            app().getTotalCart();
-          }
-        });
-      },
-
-      getTotalCart: function getTotalCart() {
-        var $totalCart = new DOM('[data-js="total-cart"]');
-        $totalCart.get().textContent = `TOTAL: ${win.total.toLocaleString(
-          'pt-BR', { style: 'currency', currency: 'BRL' }
-        )}`;
+        ++totalItensCart;
+        app().removeItemCart($itensCart, itemId, selectedGame.price);
       },
 
       addNumberZero: function addNumberZero() {
-        var selectedNumbersListAscOrder = [...win.selectedNumbers].sort((x, y) => x - y);
+        var selectedNumbersListAscOrder = [...selectedNumbers].sort((x, y) => x - y);
         return selectedNumbersListAscOrder.map(function (item) {
           if (item < 10)
             item = '0' + item;
@@ -197,12 +186,41 @@
         });
       },
 
+      removeItemCart: function removeItemCart($itensCart, itemId, price) {
+        var $binImg = new DOM(`[data-js="bin-image${itemId}"]`);
+        $binImg.on('click', function (e) {
+          if (win.confirm('Deseja realmente excluir este item do carrinho ?')) {
+            $itensCart.get().removeChild(doc.querySelector(`[data-js="item-container${itemId}"]`));
+            totalCart -= price;
+            totalItensCart -= 1;
+            app().getTotalCart();
+          }
+        });
+      },
+
+      getTotalCart: function getTotalCart() {
+        var $totalCart = new DOM('[data-js="total-cart"]');
+        $totalCart.get().textContent = `TOTAL: ${totalCart.toLocaleString(
+          'pt-BR', { style: 'currency', currency: 'BRL' }
+        )}`;
+      },
+
       addItemStylesCss: function addItemStylesCss() {
-        var $lotteryGameRegisteredCss = doc.getElementsByClassName(`lottery-game-registered${win.id}`);
-        var $lotteryRegisterInfoCss = doc.getElementsByClassName(`lottery-register-info${win.id}`);
-        $lotteryGameRegisteredCss[0].style.color = `${win.game.color} `;
-        $lotteryRegisterInfoCss[0].style.borderLeft = `5px solid ${win.game.color} `;
+        var $lotteryGameRegisteredCss = doc.getElementsByClassName(`lottery-game-registered${itemId}`);
+        var $lotteryRegisterInfoCss = doc.getElementsByClassName(`lottery-register-info${itemId}`);
+        $lotteryGameRegisteredCss[0].style.color = `${selectedGame.color} `;
+        $lotteryRegisterInfoCss[0].style.borderLeft = `5px solid ${selectedGame.color} `;
         $lotteryRegisterInfoCss[0].style.padding = '7px 0 7px 10px';
+      },
+
+      saveItens: function saveItens() {
+        var $saveItens = new DOM('[data-js="save-itens"]');
+        $saveItens.on('click', function () {
+          if (minCartValue > totalCart)
+            win.alert('O valor mínimo para realizar a compra é 30 reais');
+          else
+            win.alert('Salvou com sucesso!');
+        });
       }
     };
   }

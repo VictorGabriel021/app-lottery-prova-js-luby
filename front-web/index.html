@@ -32,7 +32,7 @@
   </nav>
   <div class="lottery-container container">
     <div class="row">
-      <div class="col-12 col-md-8">
+      <div class="col-12 col-lg-8">
         <h1 class="lottery-title">
           New bet <span class="lottery-title-chooice" data-js="lottery-title"></span>
         </h1>
@@ -47,24 +47,26 @@
         <div class="lottery-chooice-numbers" data-js="lottery-numbers"></div>
         <div class="d-flex justify-content-between">
           <div class="btn-actions-game">
-            <button class="btn btn-action mr-15" data-js="complete-game">Complete game</button>
-            <button class="btn btn-action" data-js="clear-game">Clear game</button>
+            <button class="btn btn-action mr-15 mb-3" data-js="complete-game">Complete game</button>
+            <button class="btn btn-action mb-3" data-js="clear-game">Clear game</button>
           </div>
-          <button class="btn btn-add-cart" data-js="add-to-cart">
+          <button class="btn btn-add-cart mb-3" data-js="add-to-cart">
             <img src="images/cart.png" alt="shopping-cart" class="mr-15" />
             Add to cart
           </button>
         </div>
       </div>
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-lg-4">
         <div class="card-lottery-cart">
           <h3 class="lottery-title-cart">Cart</h3>
-          <div class="lottery-ticket" data-js="itens-cart"></div>
+          <div class="lottery-cart-scroll">
+            <div class="lottery-ticket" data-js="itens-cart"></div>
+          </div>
           <h3 class="lottery-title-cart">
-            Cart <span class="lottery-total-cart" data-js="total-cart">TOTAL: </span>
+            Cart <span class="lottery-total-cart" data-js="total-cart">TOTAL: R$ 0,00</span>
           </h3>
         </div>
-        <div class="card-lottery-save">
+        <div class="card-lottery-save" data-js="save-itens">
           <p class="lottery-title-save">
             Save
             <i class="fas fa-arrow-right"></i>

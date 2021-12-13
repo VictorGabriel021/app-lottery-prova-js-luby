@@ -79,6 +79,12 @@
   margin-top: 40px;
 }
 
+.lottery-cart-scroll {
+  height: 400px;
+  overflow: scroll;
+  margin-bottom: 20px;
+}
+
 .lottery-title-cart {
   font-size: 24px;
   font-style: italic;
@@ -122,6 +128,7 @@
   border: 1px solid #e2e2e2;
   border-radius: 0 0 10px 10px;
   padding: 25px 0;
+  cursor: pointer;
 }
 
 .lottery-title-save {
