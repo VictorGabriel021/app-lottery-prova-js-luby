@@ -48,6 +48,8 @@
           $btnChooiceColor.get().addClassCss = index;
           $btnChooiceColor.get().addEventListener('click', app().loadLotteryInfo, false);
         });
+        var $loadingInfoFirstgame = new DOM(`.btn-chooice-color0`);
+        $loadingInfoFirstgame.get().click();
       },
 
       addCssInButtonGame: function addCssInButtonGame(index, color) {
@@ -145,7 +147,7 @@
         if (selectedNumbers && selectedNumbers?.size > 0) {
           var selectedNumberGame = [...selectedNumbers].sort((x, y) => x - y);
 
-          if (!app().hasOtherGameRegistered(selectedNumberGame)) {
+          if (!app().hasOtherGameResgitered(selectedNumberGame)) {
             selectedNumbersList.push(selectedNumberGame);
             app().createItem();
             app().addItemStylesCss();
@@ -159,7 +161,7 @@
         }
       },
 
-      hasOhterGameResgitered: function hasOhterGameResgitered(selectedNumberGame) {
+      hasOtherGameResgitered: function hasOtherGameResgitered(selectedNumberGame) {
         var isGameEqual = false;
 
         for (let itemArray in selectedNumbersList) {
