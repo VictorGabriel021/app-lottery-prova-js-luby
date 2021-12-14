@@ -197,7 +197,7 @@
       createItem: function createItem() {
         var listNumbers = app().addNumberZero();
         var $itensCart = new DOM('[data-js="itens-cart"]');
-        if ($itensCart.get().children[0].className === 'alert alert-danger')
+        if ($itensCart.get().children[0] && $itensCart.get().children[0].className === 'alert alert-danger')
           $itensCart.get().removeChild($itensCart.get().children[0]);
 
         app().buildItem($itensCart, listNumbers);
@@ -243,8 +243,21 @@
             totalCart -= price;
             totalItensCart -= 1;
             app().getTotalCart();
+            app().addAlertInEmptyCart($itensCart);
           }
         });
+      },
+
+      addAlertInEmptyCart: function addAlertInEmptyCart($itensCart) {
+        if (!$itensCart.get().children[0]) {
+          $itensCart.get().insertAdjacentHTML('beforeend',
+            `
+              <div class="alert alert-danger">
+                O carrinho está vazio, por favor insira os jogos!
+              </div>
+            `
+          );
+        }
       },
 
       getTotalCart: function getTotalCart() {
