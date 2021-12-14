@@ -95,24 +95,40 @@
           if (i < 10)
             zero = '0';
           $lotteryNumbers.get().insertAdjacentHTML('beforeend',
-            `<p class="chooice-number chooice-number${i}" >${zero}${i}</p>`
+            `<p class="chooice-number chooice-number${i}" data-js="number-lottery">${zero}${i}</p>`
           );
+        }
+        var $lotteryNumberClicked = new DOM('[data-js="number-lottery"]');
+        $lotteryNumberClicked.on('click', app().addAndRemoveNumberManually);
+      },
+
+      addAndRemoveNumberManually: function addAndRemoveNumberManually() {
+        var hasNumberEqual = selectedNumbers.has(Number(this.textContent));
+        if (hasNumberEqual) {
+          selectedNumbers.delete(Number(this.textContent));
+          this.style.backgroundColor = `#adc0c4`;
+        }
+        if (selectedNumbers.size < selectedGame['max-number']) {
+          if (!hasNumberEqual) {
+            selectedNumbers.add(Number(this.textContent));
+            this.style.backgroundColor = '#27c383';
+          }
+        }
+        else {
+          win.alert(`Você só pode selecionar ${selectedGame['max-number']} números`);
         }
       },
 
       completeGame: function completeGame() {
         var $btnCompleteGame = new DOM('[data-js="complete-game"]');
         $btnCompleteGame.on('click', function () {
-          if (selectedGame) {
-            selectedNumbers = app().clearListNumbers();
-            while (selectedNumbers.size < selectedGame['max-number']) {
-              selectedNumbers.add(Math.ceil(Math.random() * selectedGame.range));
-            }
-            selectedNumbers.forEach(function (item) {
-              var $numbers = new DOM(`.chooice-number${item}`)
-              $numbers.get().style.backgroundColor = '#27c383';
-            });
+          while (selectedNumbers.size < selectedGame['max-number']) {
+            selectedNumbers.add(Math.ceil(Math.random() * selectedGame.range));
           }
+          selectedNumbers.forEach(function (item) {
+            var $numbers = new DOM(`.chooice-number${item}`)
+            $numbers.get().style.backgroundColor = '#27c383';
+          });
         });
       },
 
@@ -144,9 +160,8 @@
       },
 
       createItemCart: function createItemCart() {
-        if (selectedNumbers && selectedNumbers?.size > 0) {
+        if (selectedNumbers && selectedNumbers?.size === selectedGame['max-number']) {
           var selectedNumberGame = [...selectedNumbers].sort((x, y) => x - y);
-
           if (!app().hasOtherGameResgitered(selectedNumberGame)) {
             selectedNumbersList.push(selectedNumberGame);
             app().createItem();
@@ -157,7 +172,9 @@
           }
         }
         else {
-          win.alert(`Por favor selecione ${selectedGame['max-number']} números para continuar!`);
+          var missingNumber = (selectedGame['max-number'] - selectedNumbers?.size);
+          var textNumber = missingNumber > 1 ? 'números' : 'número';
+          win.alert(`Por favor selecione mais ${missingNumber} ${textNumber} para continuar!`);
         }
       },
 
@@ -180,10 +197,15 @@
       createItem: function createItem() {
         var listNumbers = app().addNumberZero();
         var $itensCart = new DOM('[data-js="itens-cart"]');
-
         if ($itensCart.get().children[0].className === 'alert alert-danger')
           $itensCart.get().removeChild($itensCart.get().children[0]);
 
+        app().buildItem($itensCart, listNumbers);
+        ++totalItensCart;
+        app().removeItemCart($itensCart, itemId, selectedGame.price);
+      },
+
+      buildItem: function buildItem($itensCart, listNumbers) {
         $itensCart.get().insertAdjacentHTML('beforeend',
           `
             <div class="d-flex align-items-center mb-4" data-js="item-container${++itemId}">
@@ -194,16 +216,14 @@
                   ${selectedGame.type}
                   <span class="lottery-game-price">
                     ${Number(selectedGame.price).toLocaleString(
-            'pt-BR', { style: 'currency', currency: 'BRL' }
-          )}
+                      'pt-BR', { style: 'currency', currency: 'BRL' }
+                    )}
                   </span >
                 </p >
               </div >
             </div >
           `
         );
-        ++totalItensCart;
-        app().removeItemCart($itensCart, itemId, selectedGame.price);
       },
 
       addNumberZero: function addNumberZero() {
