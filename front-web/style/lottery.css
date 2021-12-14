@@ -105,19 +105,13 @@
   cursor: pointer;
 }
 
-.lottery-cart-content {
-  display: flex;
-  flex-wrap: wrap;
-  width: 250px;
-}
-
 .lottery-register {
   font-size: 16px;
   color: #868686;
   font-weight: bold;
   font-style: italic;
   line-height: 1.5em;
-  width: 100%;
+  width: 90%;
   overflow-wrap: break-word;
 }
 
@@ -150,4 +144,10 @@
 
 .fa-arrow-right {
   font-size: 25px;
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+  .lottery-register {
+    width: 86%;
+  }
 }

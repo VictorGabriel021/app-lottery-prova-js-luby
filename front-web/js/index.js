@@ -210,7 +210,7 @@
           `
             <div class="d-flex align-items-center mb-4" data-js="item-container${++itemId}">
               <img src="images/bin.png" alt="bin" class="lottery-bin-icon" data-js="bin-image${itemId}" />
-              <div class="lottery-register-info${itemId} lottery-cart-content">
+              <div class="lottery-register-info${itemId} w-100">
                 <p class="lottery-register">${listNumbers.join()}</p>
                 <p class="lottery-register lottery-game-registered${itemId}">
                   ${selectedGame.type}
